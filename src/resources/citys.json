@@ -1,0 +1,41 @@
+[
+  {
+    "Auckland": [
+      {
+        "Auckland central": [
+          "Arch Hill",
+          "Herne Bay",
+          "Onetangi",
+          "St Johns"
+        ]
+      },
+      {
+        "North Shore": [
+          "Albany",
+          "Devonport",
+          "Narrow Neck",
+          "Stanley Point",
+          "Bayswater",
+          "Fairview Heights",
+          "Northcote",
+          "Sunnynook",
+          "Bayview",
+          "Forrest Hill",
+          "Northcote Point",
+          "Takapuna",
+          "Beach Haven",
+          "Glenfield"
+        ]
+      },
+      {
+        "South Auckland and eastern suburbs":[
+          "Airport Oaks",
+          "Favona",
+          "Manukau Heights",
+          "Shamrock Park"
+        ]
+      }
+    ]
+  }
+]
+  
