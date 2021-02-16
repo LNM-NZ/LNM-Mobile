@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 @observer
 export default class index extends Component {
     state={
-        phoneNumber: "02108752367",
+        phoneNumber: "18665711978",
         isPhoneValid: true,
         showSignIn: true,
         captcha: "",
@@ -35,7 +35,11 @@ export default class index extends Component {
     phoneNumberSubmit = async () => {
         const {phoneNumber} = this.state;
         const isPhoneValid = validator.validatePhone(phoneNumber);
-        this.setState({isPhoneValid});
+        if(!isPhoneValid){
+            this.setState({isPhoneValid});
+            return;
+        }
+        
 
         const response = await request.post(ACCOUNT_SIGNIN, {phone : phoneNumber});
         console.log(response);
@@ -63,16 +67,17 @@ export default class index extends Component {
         }
         this.props.RootStore.setUserInfo(phoneNumber, response.data.token, response.data.id);
         // save to cache
+        
         AsyncStorage.setItem("userinfo",JSON.stringify({
             mobile: phoneNumber,
             token: response.data.token,
             userId: response.data.id
         }));
-
+        
         if(response.data.isNew){
             this.props.navigation.navigate("UserInfo");
         }else{
-            this.props.navigate.navigate("Tabbar");
+            this.props.navigation.navigate("Tabbar");
         }
     }
 

@@ -42,5 +42,17 @@ export default {
           ...headers
         }
       })
-    }
+    },
+    authorizedGet: (url, data={}, options={}) => {
+      const token = RootStore.token;
+      const headers = options.headers || {};
+      return request.get(url, {
+        ...options,
+        params: data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ...headers
+        }
+      })
+    },
 }

@@ -19,3 +19,11 @@ export const ACCOUNT_AVATAR = '/user/loginReginfo/head';
  *  Register
  */
 export const ACCOUNT_REGISTER = '/user/loginReginfo';
+
+/** Visitors */
+export const FRIENDS_VISITORS = '/friends/visitors';
+
+/**
+ * Today best
+ */
+export const FRIENDS_TODAYBEST = '/friends/todayBest';
