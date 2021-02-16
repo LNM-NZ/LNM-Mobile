@@ -8,10 +8,12 @@ import request from '../../../utils/requestUtil';
 import {ACCOUNT_SIGNIN, ACCOUNT_CAPTCHA} from '../../../utils/urlUtil';
 import MainButton from '../../../components/MainButton';
 import {CodeField, Cursor,} from 'react-native-confirmation-code-field';
-import Toast from '../../../utils/Toast'
+import Toast from '../../../utils/Toast';
+import {inject, observer} from 'mobx-react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
+@inject("RootStore")
+@observer
 export default class index extends Component {
     state={
         phoneNumber: "02108752367",
@@ -59,11 +61,18 @@ export default class index extends Component {
             console.log(response);
             return;
         }
+        this.props.RootStore.setUserInfo(phoneNumber, response.data.token, response.data.id);
+        // save to cache
+        AsyncStorage.setItem("userinfo",JSON.stringify({
+            mobile: phoneNumber,
+            token: response.data.token,
+            userId: response.data.id
+        }));
+
         if(response.data.isNew){
             this.props.navigation.navigate("UserInfo");
-            console.log(this.props.navigation);
         }else{
-            alert("old user, please waiting")
+            this.props.navigate.navigate("Tabbar");
         }
     }
 

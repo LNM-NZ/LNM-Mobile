@@ -12,8 +12,12 @@ import MainButton from '../../../components/MainButton';
 import Toast from '../../../utils/Toast';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Overlay} from 'teaset';
+import {inject, observer} from 'mobx-react';
+import request from '../../../utils/requestUtil';
+import {ACCOUNT_AVATAR, ACCOUNT_REGISTER} from '../../../utils/urlUtil';
 
-
+@inject("RootStore")
+@observer
 export default class index extends Component {
     state = {
         nickname: "",
@@ -59,12 +63,13 @@ export default class index extends Component {
         cropping: true
       });
 
+      let overlayRef = null;
       let overlayView = (
         <Overlay.View
           style={{flex:1,backgroundColor:"#000"}}
           modal={true}
           overlayOpacity={0}
-          ref={v => this.overlayView = v}
+          ref={v => overlayRef = v}
           >
           <View style={{marginTop:px2Dp(30), 
             alignSelf: "center",
@@ -87,13 +92,49 @@ export default class index extends Component {
         </Overlay.View>
       );
       Overlay.show(overlayView);
+      console.log(image);
+      let resImg = await this.uploadImg(image);
+      console.log(resImg);
+      if(resImg.code !== "10000"){
+        return;
+      }
+      let params = this.state;
+      params.header = resImg.data.headImgPath;
+      const resReg = await request.authorizedPost(ACCOUNT_REGISTER, params);
 
+      overlayRef.close();
+      Toast.smile("Congratulations!", 2000, "center");
+      setTimeout(() => {
+        this.props.navigation.reset({
+          routes:[{name: 'Tabbar'}]
+        })
+      }, 2000);
+    }
+
+    uploadImg = (image) => {
+      let imgData = new FormData();
+      imgData.append("headPhoto", {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.split("/").pop()
+      });
+    
+      return request.authorizedPost(ACCOUNT_AVATAR, imgData, {
+        headers :{
+          'Content-Type': "multipart/form-data",
+        }
+      });
     }
 
     async componentDidMount(){
-        Permission.requestPermission();
-        this.setState({address:'79 Glenfield Bayview Auckland', city: 'North Shore'});
-      }
+      console.log(this.props);
+      Permission.requestPermission();
+      this.setState({
+        address:'79 Glenfield Bayview Auckland', 
+        city: 'North Shore',
+        lng: '174.713823049048223', 
+        lat: '-36.773718593806'});
+    }
 
     render() {
         const {nickname, gender, birthday, city} = this.state;

@@ -9,3 +9,13 @@ export const ACCOUNT_SIGNIN = '/user/login';
  * Check Captcha
  */ 
 export const ACCOUNT_CAPTCHA = '/user/loginVerification';
+
+/**
+ * Check avatar
+ */
+export const ACCOUNT_AVATAR = '/user/loginReginfo/head';
+
+/**
+ *  Register
+ */
+export const ACCOUNT_REGISTER = '/user/loginReginfo';

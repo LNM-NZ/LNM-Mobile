@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {BASE_URL} from './urlUtil';
 import Toast from './Toast';
+import RootStore from '../mobx'
 
 const request = axios.create({
     baseURL : BASE_URL
@@ -9,6 +10,7 @@ const request = axios.create({
 // Add a request interceptor
 request.interceptors.request.use(function (config) {
     Toast.showLoading("requesting...");
+    console.log(config.headers);
     return config;
   }, function (error) {
     // Do something with request error
@@ -29,5 +31,16 @@ request.interceptors.response.use(function (response) {
 
 export default {
     get: request.get,
-    post: request.post
+    post: request.post,
+    authorizedPost: (url, data={}, options={}) => {
+      const token = RootStore.token;
+      const headers = options.headers || {};
+      return request.post(url, data, {
+        ...options,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ...headers
+        }
+      })
+    }
 }
