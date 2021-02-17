@@ -10,7 +10,9 @@ const request = axios.create({
 // Add a request interceptor
 request.interceptors.request.use(function (config) {
     Toast.showLoading("requesting...");
+    console.log(config.url);
     console.log(config.headers);
+    console.log(config.params);
     return config;
   }, function (error) {
     // Do something with request error
@@ -22,6 +24,7 @@ request.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     Toast.hideLoading();
+    console.log(response.data);
     return response.data;
   }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
@@ -43,7 +46,7 @@ export default {
         }
       })
     },
-    authorizedGet: (url, data={}, options={}) => {
+    authorizedGet: (url, data, options={}) => {
       const token = RootStore.token;
       const headers = options.headers || {};
       return request.get(url, {

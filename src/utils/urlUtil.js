@@ -27,3 +27,6 @@ export const FRIENDS_VISITORS = '/friends/visitors';
  * Today best
  */
 export const FRIENDS_TODAYBEST = '/friends/todayBest';
+
+/** Recommendation */
+export const FRIENDS_RECOMMEND = '/friends/recommendation';
